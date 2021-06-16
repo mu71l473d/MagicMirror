@@ -6,11 +6,9 @@
  * MIT Licensed.
  */
 
-
 var config = {
 	port: 8080,
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
-	ipWhitelist: [],
 
 	language: "en",
 	timeFormat: 24,
@@ -18,16 +16,16 @@ var config = {
 	electronOptions: {
 		webPreferences: {
 			nodeIntegration: true,
-		},
+			enableRemoteModule: true
+		}
 	},
+
 	modules:
-		// Using exotic content. This is why dont accept go to JSON configuration file
-		(function() {
-			var positions = ["top_bar", "top_left", "top_center", "top_right", "upper_third",
-				"middle_center", "lower_third", "bottom_left", "bottom_center", "bottom_right",
-				"bottom_bar", "fullscreen_above", "fullscreen_below"];
+		// Using exotic content. This is why don't accept go to JSON configuration file
+		(function () {
+			var positions = ["top_bar", "top_left", "top_center", "top_right", "upper_third", "middle_center", "lower_third", "bottom_left", "bottom_center", "bottom_right", "bottom_bar", "fullscreen_above", "fullscreen_below"];
 			var modules = Array();
-			for (idx in positions) {
+			for (var idx in positions) {
 				modules.push({
 					module: "helloworld",
 					position: positions[idx],
@@ -37,7 +35,9 @@ var config = {
 				});
 			}
 			return modules;
-		})(),
+		})()
 };
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== "undefined") {module.exports = config;}
+if (typeof module !== "undefined") {
+	module.exports = config;
+}

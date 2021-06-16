@@ -3,8 +3,6 @@
   font-size: 75%;
   line-height: 65px;
   display: inline-block;
-  -ms-transform: translate(0, -3px); /* IE 9 */
-  -webkit-transform: translate(0, -3px); /* Safari */
   transform: translate(0, -3px);
 }
 
@@ -31,9 +29,13 @@
   padding-right: 0;
 }
 
-.weather .rain {
+.weather .precipitation {
   padding-left: 20px;
   padding-right: 0;
+}
+
+.weather tr .weathericon {
+  line-height: 25px;
 }
 
 .weather tr.colored .min-temp {

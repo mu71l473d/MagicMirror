@@ -1,69 +1,88 @@
 /* Magic Mirror
  * Server
  *
- * By Michael Teeuw http://michaelteeuw.nl
+ * By Michael Teeuw https://michaelteeuw.nl
  * MIT Licensed.
  */
+const express = require("express");
+const app = require("express")();
+const path = require("path");
+const ipfilter = require("express-ipfilter").IpFilter;
+const fs = require("fs");
+const helmet = require("helmet");
 
-var express = require("express");
-var app = require("express")();
-var server = require("http").Server(app);
-var io = require("socket.io")(server);
-var path = require("path");
-var ipfilter = require("express-ipfilter").IpFilter;
-var fs = require("fs");
-var helmet = require("helmet");
-var Utils = require(__dirname + "/utils.js");
+const Log = require("logger");
+const Utils = require("./utils.js");
 
-var Server = function(config, callback) {
+/**
+ * Server
+ *
+ * @param {object} config The MM config
+ * @param {Function} callback Function called when done.
+ * @class
+ */
+function Server(config, callback) {
+	const port = process.env.MM_PORT || config.port;
 
-	var port = config.port;
-	if (process.env.MM_PORT) {
-		port = process.env.MM_PORT;
+	let server = null;
+	if (config.useHttps) {
+		const options = {
+			key: fs.readFileSync(config.httpsPrivateKey),
+			cert: fs.readFileSync(config.httpsCertificate)
+		};
+		server = require("https").Server(options, app);
+	} else {
+		server = require("http").Server(app);
+	}
+	const io = require("socket.io")(server, {
+		cors: {
+			origin: /.*$/,
+			credentials: true
+		},
+		allowEIO3: true
+	});
+
+	Log.log(`Starting server on port ${port} ... `);
+
+	server.listen(port, config.address || "localhost");
+
+	if (config.ipWhitelist instanceof Array && config.ipWhitelist.length === 0) {
+		Log.warn(Utils.colors.warn("You're using a full whitelist configuration to allow for all IPs"));
 	}
 
-	console.log("Starting server on port " + port + " ... ");
-
-	server.listen(port, config.address ? config.address : null);
-
-	if (config.ipWhitelist instanceof Array && config.ipWhitelist.length == 0) {
-		console.info(Utils.colors.warn("You're using a full whitelist configuration to allow for all IPs"))
-	}
-
-	app.use(function(req, res, next) {
-		var result = ipfilter(config.ipWhitelist, {mode: config.ipWhitelist.length === 0 ? "deny" : "allow", log: false})(req, res, function(err) {
+	app.use(function (req, res, next) {
+		ipfilter(config.ipWhitelist, { mode: config.ipWhitelist.length === 0 ? "deny" : "allow", log: false })(req, res, function (err) {
 			if (err === undefined) {
 				return next();
 			}
-			console.log(err.message);
+			Log.log(err.message);
 			res.status(403).send("This device is not allowed to access your mirror. <br> Please check your config.js or config.js.sample to change this.");
 		});
 	});
-	app.use(helmet());
+	app.use(helmet({ contentSecurityPolicy: false }));
 
 	app.use("/js", express.static(__dirname));
-	var directories = ["/config", "/css", "/fonts", "/modules", "/vendor", "/translations", "/tests/configs"];
-	var directory;
-	for (var i in directories) {
-		directory = directories[i];
+
+	const directories = ["/config", "/css", "/fonts", "/modules", "/vendor", "/translations", "/tests/configs"];
+	for (const directory of directories) {
 		app.use(directory, express.static(path.resolve(global.root_path + directory)));
 	}
 
-	app.get("/version", function(req,res) {
+	app.get("/version", function (req, res) {
 		res.send(global.version);
 	});
 
-	app.get("/config", function(req,res) {
+	app.get("/config", function (req, res) {
 		res.send(config);
 	});
 
-	app.get("/", function(req, res) {
-		var html = fs.readFileSync(path.resolve(global.root_path + "/index.html"), {encoding: "utf8"});
+	app.get("/", function (req, res) {
+		let html = fs.readFileSync(path.resolve(`${global.root_path}/index.html`), { encoding: "utf8" });
 		html = html.replace("#VERSION#", global.version);
 
-		configFile = "config/config.js";
-		if (typeof(global.configuration_file) !== "undefined") {
-		    configFile = global.configuration_file;
+		let configFile = "config/config.js";
+		if (typeof global.configuration_file !== "undefined") {
+			configFile = global.configuration_file;
 		}
 		html = html.replace("#CONFIG_FILE#", configFile);
 
@@ -73,6 +92,6 @@ var Server = function(config, callback) {
 	if (typeof callback === "function") {
 		callback(app, io);
 	}
-};
+}
 
 module.exports = Server;

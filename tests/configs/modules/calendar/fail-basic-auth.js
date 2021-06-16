@@ -16,7 +16,8 @@ var config = {
 	electronOptions: {
 		webPreferences: {
 			nodeIntegration: true,
-		},
+			enableRemoteModule: true
+		}
 	},
 
 	modules: [
@@ -41,4 +42,6 @@ var config = {
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== "undefined") {module.exports = config;}
+if (typeof module !== "undefined") {
+	module.exports = config;
+}

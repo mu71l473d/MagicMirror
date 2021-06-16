@@ -1,30 +1,33 @@
-var fs = require("fs");
-var path = require("path");
-var chai = require("chai");
-var expect = chai.expect;
-var vm = require("vm");
+const fs = require("fs");
+const path = require("path");
+const expect = require("chai").expect;
+const vm = require("vm");
 
-before(function() {
-	var basedir = path.join(__dirname, "../../..");
+const basedir = path.join(__dirname, "../../..");
 
-	var fileName = "js/app.js";
-	var filePath = path.join(basedir, fileName);
-	var code = fs.readFileSync(filePath);
+before(function () {
+	const fileName = "js/app.js";
+	const filePath = path.join(basedir, fileName);
+	const code = fs.readFileSync(filePath);
 
 	this.sandbox = {
 		module: {},
 		__dirname: path.dirname(filePath),
 		global: {},
 		console: {
-			log: function() { /*console.log("console.log(", arguments, ")");*/ }
+			log: function () {
+				/*console.log("console.log(", arguments, ")");*/
+			}
 		},
 		process: {
-			on: function() { /*console.log("process.on called with: ", arguments);*/ },
+			on: function () {
+				/*console.log("process.on called with: ", arguments);*/
+			},
 			env: {}
 		}
 	};
 
-	this.sandbox.require = function(filename) {
+	this.sandbox.require = function (filename) {
 		// This modifies the global slightly,
 		// but supplies vm with essential code
 		return require(filename);
@@ -33,34 +36,12 @@ before(function() {
 	vm.runInNewContext(code, this.sandbox, fileName);
 });
 
-after(function() {
-	//console.log(global);
-});
+describe("Default modules set in modules/default/defaultmodules.js", function () {
+	const expectedDefaultModules = require("../../../modules/default/defaultmodules");
 
-describe("Default modules set in modules/default/defaultmodules.js", function() {
-
-	var expectedDefaultModules = [
-		"alert",
-		"calendar",
-		"clock",
-		"compliments",
-		"currentweather",
-		"helloworld",
-		"newsfeed",
-		"weatherforecast",
-		"updatenotification"
-	];
-
-	expectedDefaultModules.forEach(defaultModule => {
-		it(`contains default module "${defaultModule}"`, function() {
-			expect(this.sandbox.defaultModules).to.include(defaultModule);
-		});
-	});
-
-	expectedDefaultModules.forEach(defaultModule => {
-		it(`contains a folder for modules/default/${defaultModule}"`, function() {
+	for (const defaultModule of expectedDefaultModules) {
+		it(`contains a folder for modules/default/${defaultModule}"`, function () {
 			expect(fs.existsSync(path.join(this.sandbox.global.root_path, "modules/default", defaultModule))).to.equal(true);
 		});
-	});
-
+	}
 });

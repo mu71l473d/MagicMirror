@@ -1,19 +1,16 @@
-/* exported Utils */
 /* Magic Mirror
  * Utils
  *
  * By Rodrigo Ramírez Norambuena https://rodrigoramirez.com
  * MIT Licensed.
  */
+const colors = require("colors/safe");
 
-var colors = require("colors/safe");
-
-var Utils = {
+module.exports = {
 	colors: {
 		warn: colors.yellow,
 		error: colors.red,
-		info: colors.blue
+		info: colors.blue,
+		pass: colors.green
 	}
 };
-
-if (typeof module !== "undefined") {module.exports = Utils;}

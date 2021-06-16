@@ -6,6 +6,7 @@
 	"DAYAFTERTOMORROW": "I overmorgen",
 	"RUNNING": "Slutter om",
 	"EMPTY": "Ingen kommende begivenheder.",
+	"WEEK": "Uge {weekNumber}",
 
 	"N": "N",
 	"NNE": "NNØ",
@@ -24,6 +25,7 @@
 	"NW": "NV",
 	"NNW": "NNV",
 
+	"FEELS": "Føles som {DEGREE}",
 
 	"UPDATE_NOTIFICATION": "MagicMirror² opdatering tilgængelig.",
 	"UPDATE_NOTIFICATION_MODULE": "Opdatering tilgængelig for {MODULE_NAME} modulet.",

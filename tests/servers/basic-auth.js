@@ -1,35 +1,29 @@
-var http = require("http");
-var path = require("path");
-var auth = require("http-auth");
-var express = require("express");
-var app = express();
+const path = require("path");
+const auth = require("express-basic-auth");
+const express = require("express");
+const app = express();
 
-var server;
+const basicAuth = auth({
+	realm: "MagicMirror Area restricted.",
+	users: { MagicMirror: "CallMeADog" }
+});
 
-var basic = auth.basic(
-	{
-		realm: "MagicMirror Area restricted."
-	},
-	(username, password, callback) => {
-		callback(username === "MagicMirror" && password === "CallMeADog");
-	}
-);
+app.use(basicAuth);
 
-app.use(auth.connect(basic));
+// Set available directories
+const directories = ["/tests/configs"];
+const rootPath = path.resolve(__dirname + "/../../");
 
-// Set directories availables
-var directories = ["/tests/configs"];
-var directory;
-rootPath = path.resolve(__dirname + "/../../");
-for (i in directories) {
-	directory = directories[i];
+for (let directory of directories) {
 	app.use(directory, express.static(path.resolve(rootPath + directory)));
 }
 
-exports.listen = function() {
+let server;
+
+exports.listen = function () {
 	server = app.listen.apply(app, arguments);
 };
 
-exports.close = function(callback) {
+exports.close = function (callback) {
 	server.close(callback);
 };

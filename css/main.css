@@ -2,6 +2,7 @@ html {
   cursor: none;
   overflow: hidden;
   background: #000;
+  user-select: none;
 }
 
 ::-webkit-scrollbar {
@@ -177,10 +178,6 @@ sup {
 .region.top.center,
 .region.bottom.center {
   left: 50%;
-  -moz-transform: translateX(-50%);
-  -o-transform: translateX(-50%);
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
   transform: translateX(-50%);
 }
 
@@ -213,10 +210,6 @@ sup {
 .region.middle.center {
   width: 100%;
   text-align: center;
-  -moz-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 

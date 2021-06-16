@@ -1,6 +1,8 @@
-var app = require("../js/app.js");
-app.start(function(config) {
-	console.log("");
+const app = require("../js/app.js");
+const Log = require("logger");
+
+app.start(function (config) {
 	var bindAddress = config.address ? config.address : "localhost";
-	console.log("Ready to go! Please point your browser to: http://" + bindAddress + ":" + config.port);
+	var httpType = config.useHttps ? "https" : "http";
+	Log.log("\nReady to go! Please point your browser to: " + httpType + "://" + bindAddress + ":" + config.port);
 });

@@ -14,7 +14,8 @@ var config = {
 	electronOptions: {
 		webPreferences: {
 			nodeIntegration: true,
-		},
+			enableRemoteModule: true
+		}
 	},
 
 	modules: [
@@ -25,7 +26,7 @@ var config = {
 				calendars: [
 					{
 						maximumNumberOfDays: 10000,
-						url: "http://localhost:8011/tests/configs/data/calendar_test.ics",
+						url: "http://localhost:8080/tests/configs/data/calendar_test.ics",
 						auth: {
 							user: "MagicMirror",
 							pass: "CallMeADog"
@@ -38,4 +39,6 @@ var config = {
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== "undefined") {module.exports = config;}
+if (typeof module !== "undefined") {
+	module.exports = config;
+}

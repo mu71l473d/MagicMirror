@@ -14,7 +14,8 @@ var config = {
 	electronOptions: {
 		webPreferences: {
 			nodeIntegration: true,
-		},
+			enableRemoteModule: true
+		}
 	},
 
 	modules: [
@@ -24,7 +25,6 @@ var config = {
 			config: {
 				compliments: {
 					anytime: ["Anytime here"]
-
 				}
 			}
 		}
@@ -32,4 +32,6 @@ var config = {
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== "undefined") {module.exports = config;}
+if (typeof module !== "undefined") {
+	module.exports = config;
+}

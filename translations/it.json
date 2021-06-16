@@ -6,7 +6,6 @@
 	"DAYAFTERTOMORROW": "Dopodomani",
 	"RUNNING": "Termina entro",
 	"EMPTY": "Nessun evento imminente.",
-
 	"WEEK": "Settimana {weekNumber}",
 
 	"N": "N",
@@ -25,6 +24,8 @@
 	"WNW": "ONO",
 	"NW": "NO",
 	"NNW": "NNO",
+
+	"FEELS": "Percepiti {DEGREE}",
 
 	"UPDATE_NOTIFICATION": "E' disponibile un aggiornamento di MagicMirror².",
 	"UPDATE_NOTIFICATION_MODULE": "E' disponibile un aggiornamento del modulo {MODULE_NAME}.",

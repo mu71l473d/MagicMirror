@@ -3,8 +3,7 @@
  * By Rodrigo Ramírez Norambuena https://rodrigoramirez.com
  * MIT Licensed.
  */
-
-var config = {
+let config = {
 	port: 8080,
 	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"],
 
@@ -14,12 +13,12 @@ var config = {
 	electronOptions: {
 		webPreferences: {
 			nodeIntegration: true,
-		},
+			enableRemoteModule: true
+		}
 	},
 
 	modules: [
 		{
-
 			module: "newsfeed",
 			position: "bottom_bar",
 			config: {
@@ -27,7 +26,7 @@ var config = {
 					{
 						title: "Rodrigo Ramirez Blog",
 						url: "http://localhost:8080/tests/configs/data/feed_test_rodrigoramirez.xml"
-					},
+					}
 				]
 			}
 		}
@@ -35,4 +34,6 @@ var config = {
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== "undefined") {module.exports = config;}
+if (typeof module !== "undefined") {
+	module.exports = config;
+}

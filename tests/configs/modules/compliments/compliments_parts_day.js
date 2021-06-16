@@ -14,7 +14,8 @@ var config = {
 	electronOptions: {
 		webPreferences: {
 			nodeIntegration: true,
-		},
+			enableRemoteModule: true
+		}
 	},
 
 	modules: [
@@ -23,15 +24,9 @@ var config = {
 			position: "middle_center",
 			config: {
 				compliments: {
-					morning: [
-						"Hi", "Good Morning", "Morning test"
-					],
-					afternoon: [
-						"Hello", "Good Afternoon", "Afternoon test"
-					],
-					evening: [
-						"Hello There", "Good Evening", "Evening test"
-					]
+					morning: ["Hi", "Good Morning", "Morning test"],
+					afternoon: ["Hello", "Good Afternoon", "Afternoon test"],
+					evening: ["Hello There", "Good Evening", "Evening test"]
 				}
 			}
 		}
@@ -39,4 +34,6 @@ var config = {
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== "undefined") {module.exports = config;}
+if (typeof module !== "undefined") {
+	module.exports = config;
+}
